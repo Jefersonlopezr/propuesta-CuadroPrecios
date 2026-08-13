@@ -384,6 +384,8 @@
         <div class="hero-codes">
           <div class="code-row"><span>Ref. proveedor</span> · <b id="codeProv">—</b></div>
           <div class="code-row"><span>Ref. interna</span> · <b id="codeInt">—</b></div>
+          <div class="code-row"><span>Factura</span> · <b id="heroFactura">—</b></div>
+          <div class="code-row"><span>Cantidad</span> · <b id="heroCantidad">—</b></div>
         </div>
       </div>
     </div>
@@ -397,6 +399,14 @@
       <div class="info-box readonly">
         <div class="k">Costo compra anterior</div>
         <div class="v" id="costoAnterior">—</div>
+      </div>
+      <div class="info-box readonly">
+        <div class="k">Costo anterior (Reprogramación)</div>
+        <div class="v" id="costoReprogramacion">—</div>
+      </div>
+      <div class="info-box readonly">
+        <div class="k">Precio público anterior</div>
+        <div class="v" id="publicoAnterior">—</div>
       </div>
     </div>
 
@@ -481,49 +491,57 @@ let activeCoord = 'camila';
 let refs = [
   {
     id:'ACC-2103', coord:'camila', codeProv:'PRV-73210-A', codeInt:'ACC-2103', name:'Clutch Derek Alba — Blanco',
-    img:IMG.bolso1, costoActual:96000, costoAnterior:null, minMargen:42,
+    img:IMG.bolso1, costoActual:96000, costoAnterior:null, costoReprogramacion:null, minMargen:42,
+    publicoAnterior:null, factura:null, cantidad:24,
     sugerido:null, referente:null, descuento:null, publico:null,
     status:'pendiente', note:null
   },
   {
     id:'ACC-2087', coord:'camila', codeProv:'PRV-73088-A', codeInt:'ACC-2087', name:'Clutch Derek Lazo — Negro',
-    img:IMG.bolso2, costoActual:88000, costoAnterior:82000, minMargen:42,
+    img:IMG.bolso2, costoActual:88000, costoAnterior:82000, costoReprogramacion:null, minMargen:42,
+    publicoAnterior:195000, factura:'FAC-08421', cantidad:18,
     sugerido:210000, referente:225000, descuento:5, publico:null,
     status:'gestion', note:null
   },
   {
     id:'FRG-3310', coord:'camila', codeProv:'PRV-61042-F', codeInt:'FRG-3310', name:'Derek Edición Limitada 100ml',
-    img:IMG.perfume1, costoActual:58000, costoAnterior:54000, minMargen:46,
+    img:IMG.perfume1, costoActual:58000, costoAnterior:54000, costoReprogramacion:56500, minMargen:46,
+    publicoAnterior:165000, factura:'FAC-08455', cantidad:36,
     sugerido:165000, referente:179000, descuento:0, publico:179000,
     status:'espera', note:null
   },
   {
     id:'FRG-3325', coord:'camila', codeProv:'PRV-61099-F', codeInt:'FRG-3325', name:'Derek Collection 75ml',
-    img:IMG.perfume2, costoActual:61000, costoAnterior:null, minMargen:46,
+    img:IMG.perfume2, costoActual:61000, costoAnterior:null, costoReprogramacion:null, minMargen:46,
+    publicoAnterior:null, factura:null, cantidad:30,
     sugerido:150000, referente:158000, descuento:0, publico:105000,
     status:'devuelto', note:'El margen quedó en 41.9%, por debajo del mínimo (46%). Es una referencia nueva — revisa de nuevo el referente de mercado antes de proponer el precio.'
   },
   {
     id:'TXF-1187', coord:'laura', codeProv:'PRV-40021-T', codeInt:'TXF-1187', name:'Top Derek canesú — Negro',
-    img:IMG.blusa1, costoActual:45000, costoAnterior:42000, minMargen:50,
+    img:IMG.blusa1, costoActual:45000, costoAnterior:42000, costoReprogramacion:null, minMargen:50,
+    publicoAnterior:109000, factura:'FAC-08390', cantidad:42,
     sugerido:110000, referente:119000, descuento:0, publico:119000,
     status:'aprobado', note:null
   },
   {
     id:'TXF-1204', coord:'laura', codeProv:'PRV-40077-T', codeInt:'TXF-1204', name:'Sweater Derek moños — Crema',
-    img:IMG.blusa2, costoActual:52000, costoAnterior:null, minMargen:50,
+    img:IMG.blusa2, costoActual:52000, costoAnterior:null, costoReprogramacion:null, minMargen:50,
+    publicoAnterior:null, factura:null, cantidad:20,
     sugerido:null, referente:null, descuento:null, publico:null,
     status:'pendiente', note:null
   },
   {
     id:'ZAP-0876', coord:'david', codeProv:'PRV-55510-Z', codeInt:'ZAP-0876', name:'Sandalia Derek cuero — Café',
-    img:IMG.zapato1, costoActual:68000, costoAnterior:63000, minMargen:44,
+    img:IMG.zapato1, costoActual:68000, costoAnterior:63000, costoReprogramacion:70500, minMargen:44,
+    publicoAnterior:149000, factura:'FAC-08502', cantidad:15,
     sugerido:158000, referente:169000, descuento:8, publico:null,
     status:'gestion', note:null
   },
   {
     id:'ZAP-0901', coord:'david', codeProv:'PRV-55602-Z', codeInt:'ZAP-0901', name:'Botín Derek Western — Blanco',
-    img:IMG.zapato2, costoActual:112000, costoAnterior:null, minMargen:44,
+    img:IMG.zapato2, costoActual:112000, costoAnterior:null, costoReprogramacion:null, minMargen:44,
+    publicoAnterior:null, factura:null, cantidad:12,
     sugerido:265000, referente:279000, descuento:0, publico:259000,
     status:'espera', note:null
   }
@@ -639,8 +657,12 @@ function openDetail(id){
   document.getElementById('heroName').textContent = r.name;
   document.getElementById('codeProv').textContent = r.codeProv;
   document.getElementById('codeInt').textContent = r.codeInt;
+  document.getElementById('heroFactura').textContent = r.factura ?? 'Sin registrar';
+  document.getElementById('heroCantidad').textContent = r.cantidad ? r.cantidad + ' unidades' : '—';
   document.getElementById('costoActual').textContent = money(r.costoActual);
   document.getElementById('costoAnterior').textContent = r.costoAnterior ? money(r.costoAnterior) : 'Primera compra';
+  document.getElementById('costoReprogramacion').textContent = r.costoReprogramacion ? money(r.costoReprogramacion) : '—';
+  document.getElementById('publicoAnterior').textContent = r.publicoAnterior ? money(r.publicoAnterior) : '—';
 
   document.getElementById('inpSugerido').value = r.sugerido ?? '';
   document.getElementById('inpReferente').value = r.referente ?? '';
