@@ -6,19 +6,23 @@
 <title>Bg360 · Gestión de Precios</title>
 <style>
   :root{
-    --bg:#0d1117;
-    --card:#162030;
-    --card-hover:#1b2838;
-    --teal:#00d4a8;
-    --teal-dim:rgba(0,212,168,0.14);
-    --red:#ff5c5c;
-    --red-dim:rgba(255,92,92,0.14);
-    --amber:#ffb454;
-    --amber-dim:rgba(255,180,84,0.14);
-    --text:#e6edf3;
+    --bg:#0D1B2A;
+    --card:#1B2B3A;
+    --card-hover:#22394c;
+    --teal:#A1FF0A;
+    --teal-dim:rgba(161,255,10,0.16);
+    --green:#03A85D;
+    --green-dim:rgba(3,168,93,0.16);
+    --red:#FF3E38;
+    --red-dim:rgba(255,62,56,0.14);
+    --amber:#FFBA3A;
+    --amber-dim:rgba(255,186,58,0.14);
+    --blue:#0076F5;
+    --blue-dim:rgba(0,118,245,0.14);
+    --text:#CDD5DF;
     --text-dim:#8b98a5;
-    --text-faint:#5b6572;
-    --border:#22303f;
+    --text-faint:#4B5565;
+    --border:#364152;
     --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -87,32 +91,84 @@
     font-size:11.5px; font-weight:600; color:var(--text-dim);
     cursor:pointer; white-space:nowrap; transition:all .15s ease;
   }
-  .coord-chip.active{background:var(--teal-dim); border-color:rgba(0,212,168,0.4); color:var(--teal);}
+  .coord-chip.active{background:var(--teal-dim); border-color:rgba(198,242,76,0.45); color:var(--teal);}
   .coord-avatar{
     width:20px; height:20px; border-radius:50%;
     background:var(--border); display:flex; align-items:center; justify-content:center;
     font-size:10.5px; font-weight:800; color:var(--text-dim); flex-shrink:0;
   }
-  .coord-chip.active .coord-avatar{background:var(--teal); color:#04211b;}
+  .coord-chip.active .coord-avatar{background:var(--teal); color:#0d1f05;}
 
   /* ---------- FILTER TABS ---------- */
   .tabs{
-    display:flex; gap:6px; padding:14px 18px 4px;
+    display:flex; gap:8px; padding:14px 18px 10px;
     overflow-x:auto; scrollbar-width:none;
   }
   .tabs::-webkit-scrollbar{display:none;}
   .tab{
-    flex-shrink:0;
-    font-size:12px; font-weight:600;
-    padding:7px 12px; border-radius:20px;
+    flex-shrink:0; display:flex; align-items:center; gap:7px;
+    font-size:12.5px; font-weight:700;
+    padding:9px 14px; border-radius:14px;
     background:var(--card); color:var(--text-dim);
     border:1px solid var(--border);
     cursor:pointer; white-space:nowrap;
     transition:all .15s ease;
   }
-  .tab .count{opacity:0.65; margin-left:4px;}
-  .tab.active{background:var(--teal); color:#04211b; border-color:var(--teal);}
-  .tab.active .count{opacity:0.75;}
+  .tab .dot{width:7px; height:7px; border-radius:50%; flex-shrink:0;}
+  .tab .count{font-weight:800; color:var(--text);}
+  .tab.active{background:var(--card-hover); border-color:var(--text-dim); color:var(--text);}
+  .tab.active .count{color:var(--text);}
+
+  /* ---------- VIEW TOOLBAR ---------- */
+  .view-toolbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:2px 18px 12px;
+    gap:8px;
+  }
+  .view-toggle{
+    display:flex; background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:3px; gap:2px; flex:1;
+  }
+  .view-btn{
+    flex:1; text-align:center;
+    font-size:11.5px; font-weight:700; padding:7px 11px;
+    border-radius:9px; color:var(--text-dim); cursor:pointer;
+    transition:all .15s ease; white-space:nowrap;
+  }
+  .view-btn.active{background:var(--teal); color:#0d1f05;}
+  .sort-btn{
+    display:flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:700; color:var(--text-dim);
+    background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:9px 13px; cursor:pointer;
+    white-space:nowrap; transition:all .15s ease; flex-shrink:0;
+  }
+  .sort-btn.active{color:var(--teal); border-color:rgba(198,242,76,0.45); background:var(--teal-dim);}
+  .sort-btn #sortIcon{font-size:13px;}
+
+  /* ---------- QUICK LIST ROW ---------- */
+  .quick-row{
+    display:flex; align-items:center; gap:10px;
+    background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:11px 13px;
+    margin-bottom:8px; cursor:pointer;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .quick-row:active{transform:scale(0.98);}
+  .quick-row:hover{background:var(--card-hover);}
+  .quick-main{flex:1; min-width:0;}
+  .quick-name{font-size:13px; font-weight:700; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .quick-sub{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
+  .quick-prices{font-size:11px; color:var(--text-dim); margin-top:3px;}
+  .quick-prices b{color:var(--text);}
+  .quick-margin{
+    flex-shrink:0; text-align:right; min-width:64px;
+  }
+  .quick-margin .val{font-size:15px; font-weight:800;}
+  .quick-margin .val.ok{color:var(--green);}
+  .quick-margin .val.bad{color:var(--red);}
+  .quick-margin .val.empty{color:var(--text-faint); font-size:12px; font-weight:600;}
+  .quick-margin .lbl{font-size:9px; color:var(--text-faint); font-weight:700; text-transform:uppercase; margin-top:1px;}
 
   /* ---------- LIST ---------- */
   .list{
@@ -164,7 +220,7 @@
   }
   .status-pendiente{background:var(--card); color:var(--text-dim); border:1px solid var(--border);}
   .status-gestion{background:var(--amber-dim); color:var(--amber);}
-  .status-espera{background:rgba(96,165,250,0.14); color:#60a5fa;}
+  .status-espera{background:var(--blue-dim); color:var(--blue);}
   .status-devuelto{background:var(--red-dim); color:var(--red);}
   .status-aprobado{background:var(--teal-dim); color:var(--teal);}
 
@@ -215,7 +271,7 @@
 
   .note-banner{
     margin:0 18px 16px;
-    background:var(--red-dim); border:1px solid rgba(255,92,92,0.3);
+    background:var(--red-dim); border:1px solid rgba(255,62,56,0.3);
     border-radius:14px; padding:12px 14px;
   }
   .note-banner .label{font-size:10.5px; font-weight:800; color:var(--red); text-transform:uppercase; letter-spacing:0.04em; display:flex; align-items:center; gap:5px;}
@@ -276,20 +332,20 @@
     background:var(--card);
     transition:background .2s ease, border-color .2s ease;
   }
-  .profit-card.ok{background:linear-gradient(135deg, rgba(0,212,168,0.12), rgba(0,212,168,0.03)); border-color:rgba(0,212,168,0.35);}
-  .profit-card.bad{background:linear-gradient(135deg, rgba(255,92,92,0.14), rgba(255,92,92,0.03)); border-color:rgba(255,92,92,0.4);}
+  .profit-card.ok{background:linear-gradient(135deg, rgba(3,168,93,0.14), rgba(3,168,93,0.03)); border-color:rgba(3,168,93,0.4);}
+  .profit-card.bad{background:linear-gradient(135deg, rgba(255,62,56,0.14), rgba(255,62,56,0.03)); border-color:rgba(255,62,56,0.4);}
   .profit-top{display:flex; justify-content:space-between; align-items:center;}
   .profit-label{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-faint);}
   .profit-tag{
     font-size:10.5px; font-weight:800; padding:4px 9px; border-radius:8px;
   }
-  .profit-tag.ok{background:var(--teal-dim); color:var(--teal);}
+  .profit-tag.ok{background:var(--green-dim); color:var(--green);}
   .profit-tag.bad{background:var(--red-dim); color:var(--red);}
   .profit-value{
     font-size:34px; font-weight:800; margin-top:6px; line-height:1;
     transition:color .2s ease;
   }
-  .profit-value.ok{color:var(--teal);}
+  .profit-value.ok{color:var(--green);}
   .profit-value.bad{color:var(--red);}
   .profit-bar-track{
     height:8px; background:#0a1119; border-radius:6px; margin-top:14px; overflow:hidden;
@@ -316,14 +372,14 @@
     transition:transform .1s ease, opacity .15s ease;
   }
   .btn:active{transform:scale(0.97);}
-  .btn-primary{background:var(--teal); color:#04211b;}
+  .btn-primary{background:var(--teal); color:#0d1f05;}
   .btn-primary:disabled{opacity:0.35; pointer-events:none;}
   .btn-secondary{background:var(--card); color:var(--text-dim); border:1px solid var(--border); flex:0 0 46px; display:flex; align-items:center; justify-content:center;}
 
   /* Toast */
   .toast{
     position:absolute; top:16px; left:50%; transform:translateX(-50%) translateY(-140%);
-    background:var(--teal); color:#04211b;
+    background:var(--teal); color:#0d1f05;
     font-size:12.5px; font-weight:700;
     padding:10px 16px; border-radius:12px;
     display:flex; align-items:center; gap:6px;
@@ -359,6 +415,16 @@
     </div>
 
     <div class="tabs" id="tabs"></div>
+
+    <div class="view-toolbar">
+      <div class="view-toggle" id="viewToggle">
+        <div class="view-btn active" data-view="cards" onclick="setView('cards')">Tarjetas</div>
+        <div class="view-btn" data-view="list" onclick="setView('list')">Lista rápida</div>
+      </div>
+      <div class="sort-btn" id="sortBtn" onclick="toggleSort()">
+        <span id="sortIcon">↕</span> Margen
+      </div>
+    </div>
 
     <div class="list" id="listContainer"></div>
   </div>
@@ -558,6 +624,8 @@ const STATUS_CLASS = {
 
 let activeFilter = 'todas';
 let currentRefId = null;
+let currentView = 'cards';
+let sortByMargin = null; // null | 'desc' | 'asc'
 
 /* ---------------- FORMAT HELPERS ---------------- */
 function money(n){
@@ -570,6 +638,12 @@ function parseNum(str){
 }
 function coordRefs(){
   return refs.filter(r => r.coord === activeCoord);
+}
+function calcMargin(r){
+  if(!r.publico || r.publico <= 0) return null;
+  const descuento = r.descuento || 0;
+  const costoBase = r.costoActual * (1 - descuento/100);
+  return ((r.publico - costoBase) / r.publico) * 100;
 }
 
 /* ---------------- COORDINATOR SWITCH ---------------- */
@@ -598,21 +672,50 @@ function renderTabs(){
   const tabsEl = document.getElementById('tabs');
   const order = ['todas','pendiente','gestion','espera','devuelto','aprobado'];
   const labels = {todas:'Todas', pendiente:'Pendientes', gestion:'En gestión', espera:'Espera aprob.', devuelto:'Devueltas', aprobado:'Aprobadas'};
+  const dotColors = {todas:'#697586', pendiente:'#697586', gestion:'#FFBA3A', espera:'#0076F5', devuelto:'#FF3E38', aprobado:'#A1FF0A'};
   const mine = coordRefs();
   tabsEl.innerHTML = order.map(key=>{
     const count = key==='todas' ? mine.length : mine.filter(r=>r.status===key).length;
-    return `<div class="tab ${activeFilter===key?'active':''}" onclick="setFilter('${key}')">${labels[key]}<span class="count">${count}</span></div>`;
+    return `<div class="tab ${activeFilter===key?'active':''}" onclick="setFilter('${key}')">
+      <span class="dot" style="background:${dotColors[key]}"></span>${labels[key]} <span class="count">${count}</span></div>`;
   }).join('');
 }
 function setFilter(key){ activeFilter = key; renderTabs(); renderList(); }
+
+/* ---------------- VIEW & SORT ---------------- */
+function setView(view){
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  renderList();
+}
+function toggleSort(){
+  sortByMargin = sortByMargin === 'desc' ? 'asc' : sortByMargin === 'asc' ? null : 'desc';
+  const btn = document.getElementById('sortBtn');
+  const icon = document.getElementById('sortIcon');
+  btn.classList.toggle('active', sortByMargin !== null);
+  icon.textContent = sortByMargin === 'desc' ? '↓' : sortByMargin === 'asc' ? '↑' : '↕';
+  renderList();
+}
 
 /* ---------------- LIST ---------------- */
 function renderList(){
   const container = document.getElementById('listContainer');
   const mine = coordRefs();
-  const filtered = activeFilter==='todas' ? mine : mine.filter(r=>r.status===activeFilter);
+  let filtered = activeFilter==='todas' ? mine : mine.filter(r=>r.status===activeFilter);
 
   document.getElementById('pendingCount').textContent = mine.filter(r=>r.status==='pendiente').length;
+
+  if(sortByMargin){
+    filtered = [...filtered].sort((a,b)=>{
+      const ma = calcMargin(a), mb = calcMargin(b);
+      if(ma === null && mb === null) return 0;
+      if(ma === null) return 1;
+      if(mb === null) return -1;
+      return sortByMargin === 'desc' ? mb - ma : ma - mb;
+    });
+  }
 
   if(filtered.length === 0){
     const noneAtAll = mine.length === 0;
@@ -621,6 +724,29 @@ function renderList(){
       <div class="title">${noneAtAll ? 'Sin referencias por gestionar' : 'Nada por aquí'}</div>
       <div class="sub">${noneAtAll ? 'Esta categoría no tiene referencias nuevas por el momento.' : 'No tienes referencias en este estado por ahora.'}</div>
     </div>`;
+    return;
+  }
+
+  if(currentView === 'list'){
+    container.innerHTML = filtered.map(r=>{
+      const margin = calcMargin(r);
+      const cumple = margin !== null && margin >= r.minMargen;
+      const marginHtml = margin === null
+        ? `<div class="val empty">Sin fijar</div>`
+        : `<div class="val ${cumple?'ok':'bad'}">${margin.toFixed(1)}%</div>`;
+      return `
+      <div class="quick-row" onclick="openDetail('${r.id}')">
+        <div class="quick-main">
+          <div class="quick-name">${r.name}</div>
+          <div class="quick-sub">${r.codeInt} · ${STATUS_LABEL[r.status]}</div>
+          <div class="quick-prices">Costo <b>${money(r.costoActual)}</b> → Público <b>${r.publico ? money(r.publico) : '—'}</b></div>
+        </div>
+        <div class="quick-margin">
+          ${marginHtml}
+          <div class="lbl">mín. ${r.minMargen}%</div>
+        </div>
+      </div>`;
+    }).join('');
     return;
   }
 
@@ -739,11 +865,11 @@ function updateProfit(){
 
   const barPct = Math.max(4, Math.min(100, (margen / (r.minMargen*1.6)) * 100));
   barEl.style.width = barPct + '%';
-  barEl.style.background = cumple ? 'var(--teal)' : 'var(--red)';
+  barEl.style.background = cumple ? 'var(--green)' : 'var(--red)';
 
   const delta = margen - r.minMargen;
   deltaEl.textContent = (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' pts vs. mínimo';
-  deltaEl.style.color = cumple ? 'var(--teal)' : 'var(--red)';
+  deltaEl.style.color = cumple ? 'var(--green)' : 'var(--red)';
 
   if(r.status !== 'espera' && r.status !== 'aprobado'){
     finalizeBtn.disabled = !cumple;
