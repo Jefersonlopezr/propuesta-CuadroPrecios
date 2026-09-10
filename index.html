@@ -79,6 +79,18 @@
     display:flex; align-items:center; justify-content:center;
     border:2px solid var(--bg);
   }
+  /* ---------- ROLE SWITCH ---------- */
+  .role-switch{
+    display:flex; background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:3px; gap:2px; margin-top:14px;
+  }
+  .role-btn{
+    flex:1; text-align:center;
+    font-size:12px; font-weight:700; padding:8px 10px;
+    border-radius:9px; color:var(--text-dim); cursor:pointer;
+    transition:all .15s ease;
+  }
+  .role-btn.active{background:var(--teal); color:#0d1f05;}
   /* ---------- COORDINATOR SWITCH (demo only) ---------- */
   .coord-switch{
     display:flex; gap:6px; margin-top:14px; overflow-x:auto; scrollbar-width:none;
@@ -166,6 +178,7 @@
   .factura-badge.gestion{background:var(--amber-dim); color:var(--amber);}
   .factura-badge.espera{background:var(--blue-dim); color:var(--blue);}
   .factura-badge.devuelto{background:var(--red-dim); color:var(--red);}
+  .factura-badge.rechazado{background:var(--red-dim); color:var(--red);}
   .factura-badge.aprobado{background:var(--teal-dim); color:var(--teal);}
   .factura-progress-row{display:flex; align-items:center; gap:8px; margin-top:8px;}
   .factura-progress-track{
@@ -176,6 +189,7 @@
   .factura-progress-fill.gestion{background:var(--amber);}
   .factura-progress-fill.espera{background:var(--blue);}
   .factura-progress-fill.devuelto{background:var(--red);}
+  .factura-progress-fill.rechazado{background:var(--red);}
   .factura-progress-fill.aprobado{background:var(--teal);}
   .factura-progress-label{font-size:10px; color:var(--text-faint); font-weight:700; white-space:nowrap;}
   .factura-hint{font-size:10px; color:var(--text-faint); margin-top:6px; font-weight:600;}
@@ -202,6 +216,8 @@
   }
   .quick-row:active{transform:scale(0.98);}
   .quick-row:hover{background:var(--card-hover);}
+  .quick-row.disabled{opacity:.5; cursor:default;}
+  .quick-row.disabled:active{transform:none;}
   .quick-main{flex:1; min-width:0;}
   .quick-name{font-size:13px; font-weight:700; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .quick-sub{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
@@ -220,6 +236,11 @@
   .list{
     flex:1; overflow-y:auto; padding:12px 18px 90px;
   }
+  .list-section-label{
+    font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--text-faint); margin:14px 2px 8px;
+  }
+  .list-section-label:first-child{margin-top:0;}
   .empty-state{
     text-align:center; padding:60px 20px; color:var(--text-faint);
   }
@@ -239,6 +260,8 @@
   }
   .ref-card:active{transform:scale(0.98);}
   .ref-card:hover{background:var(--card-hover);}
+  .ref-card.disabled{opacity:.5; cursor:default;}
+  .ref-card.disabled:active{transform:none;}
   .ref-thumb{
     width:56px; height:56px; border-radius:12px;
     flex-shrink:0; overflow:hidden;
@@ -265,9 +288,9 @@
     text-transform:uppercase;
   }
   .status-pendiente{background:var(--card); color:var(--text-dim); border:1px solid var(--border);}
-  .status-gestion{background:var(--amber-dim); color:var(--amber);}
   .status-espera{background:var(--blue-dim); color:var(--blue);}
   .status-devuelto{background:var(--red-dim); color:var(--red);}
+  .status-rechazado{background:var(--red-dim); color:var(--red);}
   .status-aprobado{background:var(--teal-dim); color:var(--teal);}
 
   .devuelto-flag{
@@ -368,6 +391,13 @@
   input[type=text]:focus, input[type=number]:focus{border-color:var(--teal);}
   input::placeholder{color:var(--text-faint); font-weight:400;}
   input:disabled{opacity:0.5;}
+  textarea{
+    width:100%; background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:11px 12px; color:var(--text); font-size:13px;
+    font-family:var(--font); outline:none; resize:vertical; min-height:64px;
+  }
+  textarea:focus{border-color:var(--teal);}
+  textarea::placeholder{color:var(--text-faint);}
 
   /* ---------- REFERENTE SOURCES (nuevo) ---------- */
   .ref-sources{margin-top:8px; display:flex; flex-direction:column; gap:6px;}
@@ -419,6 +449,22 @@
     font-size:10.5px; color:var(--text-faint); margin-top:6px; display:flex; align-items:center; gap:5px;
   }
   .avg-note b{color:var(--text-dim);}
+
+  /* Sugerido sistema (nuevo) */
+  .suggest-card{
+    margin:0 18px 12px;
+    background:var(--blue-dim); border:1px solid rgba(0,118,245,0.35);
+    border-radius:14px; padding:12px 14px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .suggest-meta .k{font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--blue);}
+  .suggest-meta .v{font-size:18px; font-weight:800; color:var(--text); margin-top:3px;}
+  .suggest-meta .f{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
+  .suggest-use-btn{
+    flex-shrink:0; padding:9px 13px; border-radius:10px; border:none;
+    background:var(--blue); color:#fff; font-size:11.5px; font-weight:800; cursor:pointer;
+    white-space:nowrap;
+  }
 
   /* Rentabilidad live card */
   .profit-card{
@@ -472,6 +518,7 @@
   .btn-primary{background:var(--teal); color:#0d1f05;}
   .btn-primary:disabled{opacity:0.35; pointer-events:none;}
   .btn-secondary{background:var(--card); color:var(--text-dim); border:1px solid var(--border); flex:0 0 46px; display:flex; align-items:center; justify-content:center;}
+  .btn-danger{background:var(--red-dim); color:var(--red); border:1px solid rgba(255,62,56,0.35); flex:0 0 120px;}
 
   /* Toast */
   .toast{
@@ -499,7 +546,7 @@
     <div class="topbar">
       <div class="topbar-row">
         <div>
-          <div class="greet-label">Coordinador de producto</div>
+          <div class="greet-label" id="greetLabel">Coordinador de producto</div>
           <div class="greet-name" id="greetName">Hola, Camila</div>
           <div class="category-pill" id="categoryPill">👜 Accesorios &amp; Fragancias</div>
         </div>
@@ -507,6 +554,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <div class="bell-dot" id="pendingCount">3</div>
         </div>
+      </div>
+      <div class="role-switch" id="roleSwitch">
+        <div class="role-btn active" data-role="coordinador" onclick="setRole('coordinador')">Coordinador</div>
+        <div class="role-btn" data-role="gerencia" onclick="setRole('gerencia')">Gerencia de Operaciones</div>
       </div>
       <div class="coord-switch" id="coordSwitch"></div>
     </div>
@@ -528,7 +579,7 @@
 
     <div class="tabs" id="tabs"></div>
 
-    <div class="view-toolbar">
+    <div class="view-toolbar" id="viewToolbar">
       <div class="view-toggle" id="viewToggle">
         <div class="view-btn active" data-view="cards" onclick="setView('cards')">Tarjetas</div>
         <div class="view-btn" data-view="list" onclick="setView('list')">Lista rápida</div>
@@ -548,7 +599,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </div>
       <div>
-        <div class="detail-title">Gestionar precio</div>
+        <div class="detail-title" id="detailTitle">Gestionar precio</div>
         <div class="detail-sub" id="detailSub">Accesorios · Ref. #0000</div>
       </div>
     </div>
@@ -564,6 +615,7 @@
           <div class="code-row"><span>Ref. interna</span> · <b id="codeInt">—</b></div>
           <div class="code-row"><span>Factura</span> · <b id="heroFactura">—</b></div>
           <div class="code-row"><span>Cantidad</span> · <b id="heroCantidad">—</b></div>
+          <div class="code-row" id="heroCoordRow"><span>Coordinador</span> · <b id="heroCoord">—</b></div>
         </div>
       </div>
     </div>
@@ -585,6 +637,14 @@
       <div class="info-box readonly">
         <div class="k">Precio público anterior</div>
         <div class="v" id="publicoAnterior">—</div>
+      </div>
+      <div class="info-box readonly">
+        <div class="k">Descuento aplicado</div>
+        <div class="v" id="descuentoInfo">—</div>
+      </div>
+      <div class="info-box readonly">
+        <div class="k">Rentabilidad mínima</div>
+        <div class="v" id="minMargenInfo">—</div>
       </div>
     </div>
 
@@ -634,14 +694,18 @@
           <button type="button" class="add-source-btn" onclick="addSource()">Agregar a la lista</button>
         </div>
       </div>
+    </div>
 
-      <div class="field">
-        <label>Descuento del proveedor <span class="hint">(0 si no aplica)</span></label>
-        <div class="input-wrap">
-          <span class="prefix">%</span>
-          <input type="text" id="inpDescuento" placeholder="0" inputmode="numeric">
-        </div>
+    <div class="suggest-card">
+      <div class="suggest-meta">
+        <div class="k">PVP sugerido por el sistema</div>
+        <div class="v" id="pvpSugeridoValor">—</div>
+        <div class="f">Costo (con descuento) + rentabilidad mínima vigente</div>
       </div>
+      <button type="button" class="suggest-use-btn" id="btnUsarSugerido" onclick="usarSugerido()">Usar este valor</button>
+    </div>
+
+    <div class="field-group" style="margin-top:0;">
       <div class="field">
         <label>Precio público a proponer</label>
         <div class="input-wrap">
@@ -664,8 +728,10 @@
       </div>
     </div>
 
-    <div class="footer">
-      <button class="btn-secondary btn" onclick="saveDraft()" title="Guardar como en gestión">
+    <div id="rejectBox"></div>
+
+    <div class="footer" id="detailFooter">
+      <button class="btn-secondary btn" onclick="saveDraft()" title="Guardar borrador">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
       </button>
       <button class="btn btn-primary" id="finalizeBtn" onclick="finalizeRef()" disabled>Finalizar y enviar a aprobación</button>
@@ -695,6 +761,7 @@ const COORDINATORS = [
   { id:'david',  name:'David',  icon:'👞', category:'Zapatos',                avatar:'DA' },
 ];
 let activeCoord = 'camila';
+let activeRole = 'coordinador'; // 'coordinador' | 'gerencia'
 
 /* ---------------- DATA ---------------- */
 let refs = [
@@ -702,8 +769,8 @@ let refs = [
     id:'ACC-2103', coord:'camila', codeProv:'PRV-73210-A', codeInt:'ACC-2103', name:'Clutch Derek Alba — Blanco',
     img:IMG.bolso1, costoActual:96000, costoAnterior:null, costoReprogramacion:null, minMargen:42,
     publicoAnterior:null, factura:'FAC-2201', cantidad:24,
-    sugerido:null, referente:null, referentes:[], descuento:null, publico:null,
-    status:'pendiente', note:null
+    sugerido:null, referente:null, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ACC-2087', coord:'camila', codeProv:'PRV-73088-A', codeInt:'ACC-2087', name:'Clutch Derek Lazo — Negro',
@@ -714,124 +781,131 @@ let refs = [
       { marca:'Falabella', link:'https://falabella.com/derek-clutch-lazo', precio:229000 },
       { marca:'Sitio oficial Derek', link:'https://derek.com.co/clutch-lazo', precio:221000 }
     ],
-    descuento:5, publico:null,
-    status:'gestion', note:null
+    descuento:5, publico:null, publicoCoordinador:null,
+    status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'FRG-3310', coord:'camila', codeProv:'PRV-61042-F', codeInt:'FRG-3310', name:'Derek Edición Limitada 100ml',
     img:IMG.perfume1, costoActual:58000, costoAnterior:54000, costoReprogramacion:56500, minMargen:46,
     publicoAnterior:165000, factura:'FAC-2201', cantidad:36,
-    sugerido:165000, referente:179000, referentes:[], descuento:0, publico:179000,
-    status:'espera', note:null
+    sugerido:165000, referente:179000, referentes:[], descuento:0, publico:179000, publicoCoordinador:179000,
+    status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'FRG-3325', coord:'camila', codeProv:'PRV-61099-F', codeInt:'FRG-3325', name:'Derek Collection 75ml',
     img:IMG.perfume2, costoActual:61000, costoAnterior:null, costoReprogramacion:null, minMargen:46,
     publicoAnterior:null, factura:'FAC-2201', cantidad:30,
-    sugerido:150000, referente:158000, referentes:[], descuento:0, publico:105000,
-    status:'devuelto', note:'El margen quedó en 41.9%, por debajo del mínimo (46%). Es una referencia nueva — revisa de nuevo el referente de mercado antes de proponer el precio.'
+    sugerido:150000, referente:158000, referentes:[], descuento:0, publico:105000, publicoCoordinador:null,
+    status:'rechazado', note:'El margen quedó en 41.9%, por debajo del mínimo (46%). Es una referencia nueva — revisa de nuevo el referente de mercado antes de proponer el precio.', devolucionMotivo:null
   },
   {
     id:'TXF-1187', coord:'laura', codeProv:'PRV-40021-T', codeInt:'TXF-1187', name:'Top Derek canesú — Negro',
     img:IMG.blusa1, costoActual:45000, costoAnterior:42000, costoReprogramacion:null, minMargen:50,
     publicoAnterior:109000, factura:'FAC-2205', cantidad:42,
-    sugerido:110000, referente:119000, referentes:[], descuento:0, publico:119000,
-    status:'aprobado', note:null
+    sugerido:110000, referente:119000, referentes:[], descuento:0, publico:119000, publicoCoordinador:119000,
+    status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1204', coord:'laura', codeProv:'PRV-40077-T', codeInt:'TXF-1204', name:'Sweater Derek moños — Crema',
     img:IMG.blusa2, costoActual:52000, costoAnterior:null, costoReprogramacion:null, minMargen:50,
     publicoAnterior:null, factura:'FAC-2205', cantidad:20,
-    sugerido:null, referente:null, referentes:[], descuento:null, publico:null,
-    status:'pendiente', note:null
+    sugerido:null, referente:null, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0876', coord:'david', codeProv:'PRV-55510-Z', codeInt:'ZAP-0876', name:'Sandalia Derek cuero — Café',
     img:IMG.zapato1, costoActual:68000, costoAnterior:63000, costoReprogramacion:70500, minMargen:44,
     publicoAnterior:149000, factura:'FAC-2210', cantidad:15,
-    sugerido:158000, referente:169000, referentes:[], descuento:8, publico:null,
-    status:'gestion', note:null
+    sugerido:158000, referente:169000, referentes:[], descuento:8, publico:null, publicoCoordinador:null,
+    status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0901', coord:'david', codeProv:'PRV-55602-Z', codeInt:'ZAP-0901', name:'Botín Derek Western — Blanco',
     img:IMG.zapato2, costoActual:112000, costoAnterior:null, costoReprogramacion:null, minMargen:44,
     publicoAnterior:null, factura:'FAC-2210', cantidad:12,
-    sugerido:265000, referente:279000, referentes:[], descuento:0, publico:259000,
-    status:'espera', note:null
+    sugerido:265000, referente:279000, referentes:[], descuento:0, publico:259000, publicoCoordinador:259000,
+    status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'ACC-2130', coord:'camila', codeProv:'PRV-73340-A', codeInt:'ACC-2130', name:'Billetera Derek plisada — Beige',
     img:IMG.bolso1, costoActual:52000, costoAnterior:49000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:118000, factura:'FAC-2215', cantidad:20,
-    sugerido:118000, referente:125000, referentes:[], descuento:0, publico:122000,
-    status:'aprobado', note:null
+    sugerido:118000, referente:125000, referentes:[], descuento:0, publico:122000, publicoCoordinador:122000,
+    status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'FRG-3350', coord:'camila', codeProv:'PRV-61150-F', codeInt:'FRG-3350', name:'Derek Aura Rose 50ml',
     img:IMG.perfume2, costoActual:39000, costoAnterior:36000, costoReprogramacion:null, minMargen:46,
     publicoAnterior:95000, factura:'FAC-2215', cantidad:26,
-    sugerido:98000, referente:104000, referentes:[], descuento:0, publico:99000,
-    status:'aprobado', note:null
+    sugerido:98000, referente:104000, referentes:[], descuento:0, publico:99000, publicoCoordinador:99000,
+    status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'ACC-2141', coord:'camila', codeProv:'PRV-73401-A', codeInt:'ACC-2141', name:'Mini bolso Derek trenzado — Camel',
     img:IMG.bolso2, costoActual:71000, costoAnterior:68000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:159000, factura:'FAC-2215', cantidad:14,
-    sugerido:162000, referente:170000, referentes:[], descuento:0, publico:165000,
-    status:'aprobado', note:null
+    sugerido:162000, referente:170000, referentes:[], descuento:0, publico:165000, publicoCoordinador:165000,
+    status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1230', coord:'laura', codeProv:'PRV-40120-T', codeInt:'TXF-1230', name:'Vestido Derek canesú — Verde',
     img:IMG.blusa1, costoActual:63000, costoAnterior:60000, costoReprogramacion:null, minMargen:50,
     publicoAnterior:139000, factura:'FAC-2220', cantidad:16,
-    sugerido:145000, referente:152000, referentes:[], descuento:0, publico:149000,
-    status:'espera', note:null
+    sugerido:145000, referente:152000, referentes:[], descuento:0, publico:149000, publicoCoordinador:149000,
+    status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1245', coord:'laura', codeProv:'PRV-40155-T', codeInt:'TXF-1245', name:'Cárdigan Derek trenzado — Gris',
     img:IMG.blusa2, costoActual:58000, costoAnterior:null, costoReprogramacion:null, minMargen:50,
     publicoAnterior:null, factura:'FAC-2220', cantidad:22,
-    sugerido:135000, referente:142000, referentes:[], descuento:0, publico:139000,
-    status:'espera', note:null
+    sugerido:135000, referente:142000, referentes:[], descuento:0, publico:139000, publicoCoordinador:139000,
+    status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0920', coord:'david', codeProv:'PRV-55640-Z', codeInt:'ZAP-0920', name:'Mocasín Derek clásico — Negro',
     img:IMG.zapato1, costoActual:74000, costoAnterior:70000, costoReprogramacion:null, minMargen:44,
     publicoAnterior:159000, factura:'FAC-2225', cantidad:18,
-    sugerido:170000, referente:178000, referentes:[], descuento:0, publico:null,
-    status:'gestion', note:null
+    sugerido:170000, referente:178000, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0934', coord:'david', codeProv:'PRV-55671-Z', codeInt:'ZAP-0934', name:'Bota Derek texana — Café',
     img:IMG.zapato2, costoActual:118000, costoAnterior:null, costoReprogramacion:null, minMargen:44,
     publicoAnterior:null, factura:'FAC-2225', cantidad:9,
-    sugerido:255000, referente:270000, referentes:[], descuento:0, publico:196000,
-    status:'devuelto', note:'El margen quedó en 39.8%, por debajo del mínimo (44%). Hay competidores con precio de venta más alto — ajusta el referente de mercado.'
+    sugerido:255000, referente:270000, referentes:[], descuento:0, publico:196000, publicoCoordinador:null,
+    status:'rechazado', note:'El margen quedó en 39.8%, por debajo del mínimo (44%). Hay competidores con precio de venta más alto — ajusta el referente de mercado.', devolucionMotivo:null
+  },
+  {
+    id:'ZAP-0945', coord:'david', codeProv:'PRV-55690-Z', codeInt:'ZAP-0945', name:'Tenis Derek urbano — Gris',
+    img:IMG.zapato1, costoActual:81000, costoAnterior:76000, costoReprogramacion:null, minMargen:44,
+    publicoAnterior:172000, factura:'FAC-2225', cantidad:11,
+    sugerido:180000, referente:185000, referentes:[], descuento:0, publico:172000, publicoCoordinador:172000,
+    status:'devuelto', note:null, devolucionMotivo:'Devolución de mercancía por avería en 6 pares detectada en bodega. Nota crédito NC-4482. Referencia anulada para este ID.'
   },
   {
     id:'TXM-1301', coord:'julian', codeProv:'PRV-42010-T', codeInt:'TXM-1301', name:'Polo Derek algodón — Azul',
     img:IMG.blusa1, costoActual:47000, costoAnterior:null, costoReprogramacion:null, minMargen:48,
     publicoAnterior:null, factura:'FAC-2230', cantidad:30,
-    sugerido:null, referente:null, referentes:[], descuento:null, publico:null,
-    status:'pendiente', note:null
+    sugerido:null, referente:null, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'TXM-1312', coord:'julian', codeProv:'PRV-42045-T', codeInt:'TXM-1312', name:'Camisa Derek lino — Blanco',
     img:IMG.blusa2, costoActual:55000, costoAnterior:52000, costoReprogramacion:null, minMargen:48,
     publicoAnterior:118000, factura:'FAC-2230', cantidad:24,
-    sugerido:120000, referente:128000, referentes:[], descuento:0, publico:null,
-    status:'gestion', note:null
+    sugerido:120000, referente:128000, referentes:[], descuento:0, publico:126000, publicoCoordinador:126000,
+    status:'espera', note:null, devolucionMotivo:null
   }
 ];
 
 
 const STATUS_LABEL = {
-  pendiente:'Pendiente', gestion:'En gestión', espera:'Espera aprobación',
-  devuelto:'Devuelto', aprobado:'Aprobado'
+  pendiente:'Pendiente', espera:'Pendiente de aprobación',
+  devuelto:'Devuelto', rechazado:'Rechazado', aprobado:'Aprobada'
 };
 const STATUS_CLASS = {
-  pendiente:'status-pendiente', gestion:'status-gestion', espera:'status-espera',
-  devuelto:'status-devuelto', aprobado:'status-aprobado'
+  pendiente:'status-pendiente', espera:'status-espera',
+  devuelto:'status-devuelto', rechazado:'status-rechazado', aprobado:'status-aprobado'
 };
 
 let activeFilter = 'todas';
@@ -851,16 +925,44 @@ function parseNum(str){
 function coordRefs(){
   return refs.filter(r => r.coord === activeCoord);
 }
-function calcMargin(r){
-  if(!r.publico || r.publico <= 0) return null;
+function costoBaseDe(r){
   const descuento = r.descuento || 0;
-  const costoBase = r.costoActual * (1 - descuento/100);
-  return ((r.publico - costoBase) / r.publico) * 100;
+  return r.costoActual * (1 - descuento/100);
+}
+function calcMargin(r, publicoOverride){
+  const publico = publicoOverride !== undefined ? publicoOverride : r.publico;
+  if(!publico || publico <= 0) return null;
+  return ((publico - costoBaseDe(r)) / publico) * 100;
+}
+function pvpSugeridoSistema(r){
+  // PVP sugerido = costo (ya con descuento) + rentabilidad mínima vigente
+  const costoBase = costoBaseDe(r);
+  const valor = costoBase / (1 - r.minMargen/100);
+  return Math.round(valor / 100) * 100;
+}
+
+/* ---------------- ROLE SWITCH ---------------- */
+function setRole(role){
+  activeRole = role;
+  activeFilter = 'todas';
+  document.querySelectorAll('.role-btn').forEach(b=> b.classList.toggle('active', b.dataset.role===role));
+  document.getElementById('coordSwitch').style.display = role === 'coordinador' ? 'flex' : 'none';
+  renderCoordSwitch();
+  renderList();
 }
 
 /* ---------------- COORDINATOR SWITCH ---------------- */
 function renderCoordSwitch(){
   const el = document.getElementById('coordSwitch');
+  if(activeRole === 'gerencia'){
+    document.getElementById('greetLabel').textContent = 'Gerencia de Operaciones';
+    document.getElementById('greetName').textContent = 'Hola, Andrés';
+    document.getElementById('categoryPill').innerHTML = '🧭 Todas las categorías';
+    const pendientesGerencia = refs.filter(r=>r.status==='espera').length;
+    document.getElementById('pendingCount').textContent = pendientesGerencia;
+    return;
+  }
+
   el.innerHTML = COORDINATORS.map(c=>`
     <div class="coord-chip ${activeCoord===c.id?'active':''}" onclick="setCoord('${c.id}')">
       <div class="coord-avatar">${c.avatar}</div>${c.name}
@@ -868,8 +970,10 @@ function renderCoordSwitch(){
   `).join('');
 
   const current = COORDINATORS.find(c=>c.id===activeCoord);
+  document.getElementById('greetLabel').textContent = 'Coordinador de producto';
   document.getElementById('greetName').textContent = 'Hola, ' + current.name;
   document.getElementById('categoryPill').innerHTML = `${current.icon} ${current.category}`;
+  document.getElementById('pendingCount').textContent = coordRefs().filter(r=>r.status==='pendiente').length;
 }
 function setCoord(id){
   activeCoord = id;
@@ -892,13 +996,13 @@ function groupByFactura(list){
   return order.map(key => ({ factura: key, refs: groups[key] }));
 }
 
-function facturaStatus(refs){
-  const total = refs.length;
-  const aprobadas = refs.filter(r=>r.status==='aprobado').length;
-  const devueltas = refs.filter(r=>r.status==='devuelto').length;
+function facturaStatus(refsInGroup){
+  const total = refsInGroup.length;
+  const aprobadas = refsInGroup.filter(r=>r.status==='aprobado').length;
+  const rechazadas = refsInGroup.filter(r=>r.status==='rechazado').length;
   if(aprobadas === total) return { label:'Aprobada completa', cls:'aprobado', aprobadas, total };
-  if(devueltas > 0) return { label:'Con devoluciones', cls:'devuelto', aprobadas, total };
-  const sinIniciar = refs.filter(r=>r.status==='pendiente' || r.status==='gestion').length;
+  if(rechazadas > 0) return { label:'Con rechazos', cls:'rechazado', aprobadas, total };
+  const sinIniciar = refsInGroup.filter(r=>r.status==='pendiente').length;
   if(sinIniciar === 0) return { label:'Espera de aprobación', cls:'espera', aprobadas, total };
   return { label:'En proceso', cls:'gestion', aprobadas, total };
 }
@@ -906,9 +1010,13 @@ function facturaStatus(refs){
 /* ----- PAGE 1: invoice cards (no filters) ----- */
 function renderList(){
   const container = document.getElementById('invoiceContainer');
-  const mine = coordRefs();
 
-  document.getElementById('pendingCount').textContent = mine.filter(r=>r.status==='pendiente').length;
+  if(activeRole === 'gerencia'){
+    renderGerenciaList(container);
+    return;
+  }
+
+  const mine = coordRefs();
 
   if(mine.length === 0){
     container.innerHTML = `<div class="empty-state">
@@ -945,8 +1053,50 @@ function renderList(){
   }).join('');
 }
 
+/* ----- GERENCIA: lista de facturas con referencias pendientes de su aprobación ----- */
+function facturasConEspera(){
+  const facturas = new Set(refs.filter(r=>r.status==='espera').map(r=>r.factura || 'sin-factura'));
+  return [...facturas];
+}
+function renderGerenciaList(container){
+  const facturas = facturasConEspera();
+
+  if(facturas.length === 0){
+    container.innerHTML = `<div class="empty-state">
+      <div class="icon">✅</div>
+      <div class="title">Sin referencias pendientes</div>
+      <div class="sub">No hay referencias esperando tu aprobación por ahora.</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = facturas.map(facturaId=>{
+    const todas = refs.filter(r => (r.factura || 'sin-factura') === facturaId);
+    const pendientes = todas.filter(r=>r.status==='espera').length;
+    const coordInfo = COORDINATORS.find(c=>c.id === todas[0].coord);
+    const label = facturaId === 'sin-factura' ? 'Sin factura asignada' : facturaId;
+    return `
+      <div class="factura-group" onclick="openFacturaDetail('${facturaId}')">
+        <div class="factura-header">
+          <div class="factura-icon">🧾</div>
+          <div class="factura-main">
+            <div class="factura-top">
+              <div class="factura-name">${label}</div>
+              <div class="factura-badge espera">${pendientes} por aprobar</div>
+            </div>
+            <div class="factura-hint">${coordInfo ? coordInfo.name + ' · ' + coordInfo.category : ''} · ${todas.length} referencias en total</div>
+          </div>
+          <div class="factura-chevron open">›</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 /* ----- PAGE 2: factura detail (filters apply here) ----- */
 function facturaRefs(facturaId){
+  if(activeRole === 'gerencia'){
+    return refs.filter(r => (r.factura || 'sin-factura') === facturaId);
+  }
   return coordRefs().filter(r => (r.factura || 'sin-factura') === facturaId);
 }
 
@@ -955,15 +1105,24 @@ function openFacturaDetail(facturaId){
   activeFilter = 'todas';
 
   const list = facturaRefs(facturaId);
-  const coordInfo = COORDINATORS.find(c=>c.id===activeCoord);
   const label = facturaId === 'sin-factura' ? 'Sin factura asignada' : facturaId;
   document.getElementById('facturaDetailTitle').textContent = label;
-  document.getElementById('facturaDetailSub').textContent = `${coordInfo.category} · ${list.length} referencias`;
+
+  if(activeRole === 'gerencia'){
+    const coordInfo = COORDINATORS.find(c=>c.id === list[0].coord);
+    document.getElementById('facturaDetailSub').textContent = `${coordInfo ? coordInfo.name : ''} · ${list.length} referencias`;
+    document.getElementById('tabs').innerHTML = '';
+    document.getElementById('viewToolbar').style.display = 'none';
+  } else {
+    const coordInfo = COORDINATORS.find(c=>c.id===activeCoord);
+    document.getElementById('facturaDetailSub').textContent = `${coordInfo.category} · ${list.length} referencias`;
+    document.getElementById('viewToolbar').style.display = 'flex';
+    renderTabs();
+  }
 
   document.getElementById('listWrap').classList.add('hidden');
   document.getElementById('facturaDetailWrap').classList.add('active');
 
-  renderTabs();
   renderFacturaList();
 }
 
@@ -974,12 +1133,12 @@ function closeFacturaDetail(){
   renderList();
 }
 
-/* ---------------- TABS (scoped to current factura) ---------------- */
+/* ---------------- TABS (scoped to current factura, solo Coordinador) ---------------- */
 function renderTabs(){
   const tabsEl = document.getElementById('tabs');
-  const order = ['todas','pendiente','gestion','espera','devuelto','aprobado'];
-  const labels = {todas:'Todas', pendiente:'Pendientes', gestion:'En gestión', espera:'Espera aprob.', devuelto:'Devueltas', aprobado:'Aprobadas'};
-  const dotColors = {todas:'#697586', pendiente:'#697586', gestion:'#FFBA3A', espera:'#0076F5', devuelto:'#FF3E38', aprobado:'#A1FF0A'};
+  const order = ['todas','pendiente','espera','rechazado','devuelto','aprobado'];
+  const labels = {todas:'Todas', pendiente:'Pendientes', espera:'Pend. aprob.', rechazado:'Rechazadas', devuelto:'Devueltas', aprobado:'Aprobadas'};
+  const dotColors = {todas:'#697586', pendiente:'#697586', espera:'#0076F5', rechazado:'#FF3E38', devuelto:'#FF3E38', aprobado:'#A1FF0A'};
   const scope = currentFacturaId ? facturaRefs(currentFacturaId) : [];
   tabsEl.innerHTML = order.map(key=>{
     const count = key==='todas' ? scope.length : scope.filter(r=>r.status===key).length;
@@ -1006,9 +1165,49 @@ function toggleSort(){
   renderFacturaList();
 }
 
+function renderRefCard(r, opts){
+  opts = opts || {};
+  const disabled = !!opts.disabled;
+  const margin = calcMargin(r);
+  return `
+    <div class="ref-card ${disabled?'disabled':''}" ${disabled?'':`onclick="openDetail('${r.id}')"`}>
+      <div class="ref-thumb"><img src="${r.img}" alt="${r.name}"></div>
+      <div class="ref-info">
+        <div class="ref-top">
+          <div>
+            <div class="ref-name">${r.name}</div>
+            <div class="ref-code">${r.codeInt} · ${r.codeProv}</div>
+          </div>
+          <div class="status-badge ${STATUS_CLASS[r.status]}">${STATUS_LABEL[r.status]}</div>
+        </div>
+        <div class="ref-cost">Costo: <b>${money(r.costoActual)}</b>${r.publico ? ' · Público propuesto: <b>' + money(r.publico) + '</b>' : ''}</div>
+        ${!r.costoAnterior ? `<div class="new-flag">✦ Nueva referencia</div>` : ''}
+        ${r.status==='rechazado' ? `<div class="devuelto-flag">⚠ Rechazada por Gerencia — ver nota</div>` : ''}
+        ${r.status==='devuelto' ? `<div class="devuelto-flag">↩ Mercancía devuelta — proceso anulado</div>` : ''}
+      </div>
+    </div>`;
+}
+
 function renderFacturaList(){
   const container = document.getElementById('listContainer');
   const scope = currentFacturaId ? facturaRefs(currentFacturaId) : [];
+
+  if(activeRole === 'gerencia'){
+    const porAprobar = scope.filter(r=>r.status==='espera');
+    const otras = scope.filter(r=>r.status!=='espera');
+    let html = '';
+    html += `<div class="list-section-label">Pendientes de tu aprobación (${porAprobar.length})</div>`;
+    html += porAprobar.length
+      ? porAprobar.map(r=>renderRefCard(r)).join('')
+      : `<div class="empty-state" style="padding:24px 10px;"><div class="sub">No quedan referencias por aprobar en esta factura.</div></div>`;
+    if(otras.length){
+      html += `<div class="list-section-label">Otras referencias de esta factura</div>`;
+      html += otras.map(r=>renderRefCard(r, {disabled:true})).join('');
+    }
+    container.innerHTML = html;
+    return;
+  }
+
   let filtered = activeFilter==='todas' ? scope : scope.filter(r=>r.status===activeFilter);
 
   if(sortByMargin){
@@ -1053,23 +1252,7 @@ function renderFacturaList(){
     return;
   }
 
-  container.innerHTML = filtered.map(r=>`
-    <div class="ref-card" onclick="openDetail('${r.id}')">
-      <div class="ref-thumb"><img src="${r.img}" alt="${r.name}"></div>
-      <div class="ref-info">
-        <div class="ref-top">
-          <div>
-            <div class="ref-name">${r.name}</div>
-            <div class="ref-code">${r.codeInt} · ${r.codeProv}</div>
-          </div>
-          <div class="status-badge ${STATUS_CLASS[r.status]}">${STATUS_LABEL[r.status]}</div>
-        </div>
-        <div class="ref-cost">Costo: <b>${money(r.costoActual)}</b></div>
-        ${!r.costoAnterior ? `<div class="new-flag">✦ Nueva referencia</div>` : ''}
-        ${r.status==='devuelto' ? `<div class="devuelto-flag">⚠ Requiere ajuste — ver nota</div>` : ''}
-      </div>
-    </div>
-  `).join('');
+  container.innerHTML = filtered.map(r=>renderRefCard(r)).join('');
 }
 
 /* ---------------- DETAIL ---------------- */
@@ -1082,6 +1265,7 @@ function openDetail(id){
   document.getElementById('detailView').classList.add('active');
 
   const coordInfo = COORDINATORS.find(c=>c.id===r.coord);
+  document.getElementById('detailTitle').textContent = activeRole === 'gerencia' ? 'Revisar y aprobar' : 'Gestionar precio';
   document.getElementById('detailSub').textContent = `${coordInfo.category} · ${r.codeInt}`;
   document.getElementById('heroImg').innerHTML = `<img src="${r.img}" alt="${r.name}">`;
   document.getElementById('heroName').textContent = r.name;
@@ -1089,14 +1273,18 @@ function openDetail(id){
   document.getElementById('codeInt').textContent = r.codeInt;
   document.getElementById('heroFactura').textContent = r.factura ?? 'Sin registrar';
   document.getElementById('heroCantidad').textContent = r.cantidad ? r.cantidad + ' unidades' : '—';
+  document.getElementById('heroCoordRow').style.display = activeRole === 'gerencia' ? 'block' : 'none';
+  document.getElementById('heroCoord').textContent = coordInfo ? coordInfo.name : '—';
+
   document.getElementById('costoActual').textContent = money(r.costoActual);
   document.getElementById('costoAnterior').textContent = r.costoAnterior ? money(r.costoAnterior) : 'Primera compra';
   document.getElementById('costoReprogramacion').textContent = r.costoReprogramacion ? money(r.costoReprogramacion) : '—';
   document.getElementById('publicoAnterior').textContent = r.publicoAnterior ? money(r.publicoAnterior) : '—';
+  document.getElementById('descuentoInfo').textContent = r.descuento ? r.descuento + '%' : 'Sin descuento';
+  document.getElementById('minMargenInfo').textContent = r.minMargen + '%';
 
   document.getElementById('inpSugerido').value = r.sugerido ?? '';
   document.getElementById('inpReferente').value = r.referente ?? '';
-  document.getElementById('inpDescuento').value = r.descuento ?? '';
   document.getElementById('inpPublico').value = r.publico ?? '';
 
   document.getElementById('addSourceForm').classList.remove('open');
@@ -1106,36 +1294,84 @@ function openDetail(id){
 
   renderRefSources(r);
 
+  document.getElementById('pvpSugeridoValor').textContent = money(pvpSugeridoSistema(r));
+
   document.getElementById('minLabel').textContent = r.minMargen + '%';
 
   const noteBanner = document.getElementById('noteBanner');
-  if(r.status === 'devuelto' && r.note){
+  if(r.status === 'rechazado' && r.note){
     noteBanner.innerHTML = `<div class="note-banner">
-      <div class="label">↩ Devuelto por aprobación</div>
+      <div class="label">↩ Rechazado por Gerencia de Operaciones</div>
       <div class="msg">${r.note}</div>
+    </div>`;
+  } else if(r.status === 'devuelto' && r.devolucionMotivo){
+    noteBanner.innerHTML = `<div class="note-banner">
+      <div class="label">📦 Mercancía devuelta</div>
+      <div class="msg">${r.devolucionMotivo}</div>
     </div>`;
   } else {
     noteBanner.innerHTML = '';
   }
 
-  const disabled = r.status === 'espera' || r.status === 'aprobado';
-  ['inpSugerido','inpReferente','inpDescuento','inpPublico','inpSrcMarca','inpSrcLink','inpSrcPrecio'].forEach(id=>{
-    document.getElementById(id).disabled = disabled;
+  document.getElementById('rejectBox').innerHTML = '';
+
+  const soloLecturaSiempre = r.status === 'devuelto';
+  const camposEditablesCoordinador = activeRole === 'coordinador' && (r.status === 'pendiente' || r.status === 'rechazado') && !soloLecturaSiempre;
+  const camposEditablesGerencia = activeRole === 'gerencia' && r.status === 'espera';
+
+  ['inpSugerido','inpReferente','inpSrcMarca','inpSrcLink','inpSrcPrecio'].forEach(id=>{
+    document.getElementById(id).disabled = !camposEditablesCoordinador;
   });
+  document.getElementById('inpPublico').disabled = !(camposEditablesCoordinador || camposEditablesGerencia);
+  document.getElementById('btnUsarSugerido').disabled = !(camposEditablesCoordinador || camposEditablesGerencia);
 
-  const finalizeBtn = document.getElementById('finalizeBtn');
-  if(r.status === 'espera'){ finalizeBtn.textContent = 'Enviada — esperando aprobación'; finalizeBtn.disabled = true; }
-  else if(r.status === 'aprobado'){ finalizeBtn.textContent = 'Aprobada ✓'; finalizeBtn.disabled = true; }
-  else { finalizeBtn.textContent = 'Finalizar y enviar a aprobación'; }
-
+  renderFooter(r);
   updateProfit();
+}
+
+function renderFooter(r){
+  const footer = document.getElementById('detailFooter');
+
+  if(r.status === 'devuelto'){
+    footer.innerHTML = `<div style="flex:1; text-align:center; font-size:12.5px; color:var(--text-faint); padding:12px 0;">
+      Esta referencia fue devuelta — el proceso quedó anulado.</div>`;
+    return;
+  }
+
+  if(activeRole === 'gerencia'){
+    if(r.status !== 'espera'){
+      footer.innerHTML = `<div style="flex:1; text-align:center; font-size:12.5px; color:var(--text-faint); padding:12px 0;">
+        Esta referencia no está pendiente de tu aprobación.</div>`;
+      return;
+    }
+    footer.innerHTML = `
+      <button class="btn btn-danger" onclick="showRejectBox()">Rechazar</button>
+      <button class="btn btn-primary" id="finalizeBtn" onclick="approveOrRewrite()">Aprobar</button>`;
+    return;
+  }
+
+  // Coordinador
+  if(r.status === 'espera'){
+    footer.innerHTML = `<button class="btn btn-primary" id="finalizeBtn" disabled>Enviada — esperando aprobación</button>`;
+    return;
+  }
+  if(r.status === 'aprobado'){
+    footer.innerHTML = `<button class="btn btn-primary" id="finalizeBtn" disabled>Aprobada ✓</button>`;
+    return;
+  }
+  footer.innerHTML = `
+    <button class="btn-secondary btn" onclick="saveDraft()" title="Guardar borrador">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    </button>
+    <button class="btn btn-primary" id="finalizeBtn" onclick="finalizeRef()" disabled>Finalizar y enviar a aprobación</button>`;
 }
 
 function closeDetail(){
   document.getElementById('facturaDetailWrap').classList.add('active');
   document.getElementById('detailView').classList.remove('active');
   currentRefId = null;
-  renderTabs(); renderFacturaList();
+  if(activeRole === 'coordinador') renderTabs();
+  renderFacturaList();
 }
 
 /* ---------------- REFERENTES DE MERCADO (fuentes múltiples) ---------------- */
@@ -1217,13 +1453,20 @@ function recalcReferenteAverage(r){
   updateProfit();
 }
 
+/* ---------------- PVP SUGERIDO ---------------- */
+function usarSugerido(){
+  const r = refs.find(x=>x.id===currentRefId);
+  if(!r) return;
+  document.getElementById('inpPublico').value = pvpSugeridoSistema(r);
+  updateProfit();
+}
+
 /* ---------------- PROFIT CALC (live) ---------------- */
 function updateProfit(){
   const r = refs.find(x=>x.id===currentRefId);
   if(!r) return;
 
-  const descuento = parseNum(document.getElementById('inpDescuento').value) || 0;
-  const costoBase = r.costoActual * (1 - descuento/100);
+  const costoBase = costoBaseDe(r);
   const publico = parseNum(document.getElementById('inpPublico').value);
 
   const card = document.getElementById('profitCard');
@@ -1240,7 +1483,8 @@ function updateProfit(){
     tagEl.className = 'profit-tag'; tagEl.textContent = 'Ingresa un precio';
     barEl.style.width = '0%'; barEl.style.background = 'var(--border)';
     deltaEl.textContent = '';
-    if(r.status !== 'espera' && r.status !== 'aprobado') finalizeBtn.disabled = true;
+    if(finalizeBtn && !finalizeBtn.disabled === false) {}
+    if(finalizeBtn && r.status !== 'espera' && r.status !== 'aprobado' && r.status !== 'devuelto') finalizeBtn.disabled = true;
     return;
   }
 
@@ -1261,12 +1505,12 @@ function updateProfit(){
   deltaEl.textContent = (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' pts vs. mínimo';
   deltaEl.style.color = cumple ? 'var(--green)' : 'var(--red)';
 
-  if(r.status !== 'espera' && r.status !== 'aprobado'){
+  if(finalizeBtn && r.status !== 'espera' && r.status !== 'aprobado' && r.status !== 'devuelto'){
     finalizeBtn.disabled = !cumple;
   }
 }
 
-['inpSugerido','inpReferente','inpDescuento','inpPublico'].forEach(id=>{
+['inpSugerido','inpReferente','inpPublico'].forEach(id=>{
   document.getElementById(id).addEventListener('input', updateProfit);
 });
 
@@ -1283,9 +1527,7 @@ function saveDraft(){
   if(!r) return;
   r.sugerido = parseNum(document.getElementById('inpSugerido').value);
   r.referente = parseNum(document.getElementById('inpReferente').value);
-  r.descuento = parseNum(document.getElementById('inpDescuento').value);
   r.publico = parseNum(document.getElementById('inpPublico').value);
-  if(r.status === 'pendiente' || r.status === 'devuelto') r.status = 'gestion';
   showToast('Guardado como borrador');
   closeDetail();
 }
@@ -1295,11 +1537,50 @@ function finalizeRef(){
   if(!r) return;
   r.sugerido = parseNum(document.getElementById('inpSugerido').value);
   r.referente = parseNum(document.getElementById('inpReferente').value);
-  r.descuento = parseNum(document.getElementById('inpDescuento').value);
   r.publico = parseNum(document.getElementById('inpPublico').value);
+  r.publicoCoordinador = r.publico;
   r.status = 'espera';
   r.note = null;
   showToast('Enviada a aprobación');
+  closeDetail();
+}
+
+/* ---------- Gerencia: aprobar / reescribir / rechazar ---------- */
+function approveOrRewrite(){
+  const r = refs.find(x=>x.id===currentRefId);
+  if(!r) return;
+  const nuevoPublico = parseNum(document.getElementById('inpPublico').value);
+  const margen = calcMargin(r, nuevoPublico);
+  if(margen === null || margen < r.minMargen){
+    return; // el botón ya está deshabilitado en este caso por updateProfit()
+  }
+  const reescrito = nuevoPublico !== r.publicoCoordinador;
+  r.publico = nuevoPublico;
+  r.status = 'aprobado';
+  r.note = null;
+  showToast(reescrito ? 'PVP reescrito y aprobado' : 'Referencia aprobada');
+  closeDetail();
+}
+
+function showRejectBox(){
+  const box = document.getElementById('rejectBox');
+  box.innerHTML = `
+    <div class="field-group" style="margin-top:0;">
+      <div class="field">
+        <label>Motivo del rechazo <span class="hint">(se notifica al Coordinador)</span></label>
+        <textarea id="motivoRechazo" placeholder="Ej. El margen propuesto no compensa el descuento aplicado..."></textarea>
+      </div>
+      <button type="button" class="add-source-btn" style="background:var(--red); color:#fff;" onclick="confirmReject()">Confirmar rechazo</button>
+    </div>`;
+}
+
+function confirmReject(){
+  const r = refs.find(x=>x.id===currentRefId);
+  if(!r) return;
+  const motivo = document.getElementById('motivoRechazo').value.trim();
+  r.status = 'rechazado';
+  r.note = motivo || 'Gerencia de Operaciones rechazó la propuesta de PVP.';
+  showToast('Referencia rechazada');
   closeDetail();
 }
 
