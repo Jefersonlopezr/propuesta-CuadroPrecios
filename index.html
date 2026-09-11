@@ -363,6 +363,7 @@
   .info-box .k{font-size:10px; color:var(--text-faint); font-weight:600; text-transform:uppercase; letter-spacing:0.03em;}
   .info-box .v{font-size:14px; font-weight:700; margin-top:3px;}
   .info-box.readonly .v{color:var(--text-dim);}
+.info-box.full-width{grid-column: span 2;}
 
   .field-group{padding:0 18px; margin-top:10px;}
   .field{margin-bottom:12px;}
@@ -416,6 +417,9 @@
     text-decoration:none;
   }
   .ref-source-link:hover{color:var(--blue);}
+  .ref-source-margin{font-size:10.5px; font-weight:700; margin-top:3px;}
+  .ref-source-margin.ok{color:var(--green);}
+  .ref-source-margin.bad{color:var(--red);}
   .ref-source-del{
     flex-shrink:0; width:22px; height:22px; border-radius:7px;
     background:var(--red-dim); color:var(--red); border:none;
@@ -638,13 +642,9 @@
         <div class="k">Precio público anterior</div>
         <div class="v" id="publicoAnterior">—</div>
       </div>
-      <div class="info-box readonly">
+      <div class="info-box readonly full-width">
         <div class="k">Descuento aplicado</div>
         <div class="v" id="descuentoInfo">—</div>
-      </div>
-      <div class="info-box readonly">
-        <div class="k">Rentabilidad mínima</div>
-        <div class="v" id="minMargenInfo">—</div>
       </div>
     </div>
 
@@ -769,7 +769,7 @@ let refs = [
     id:'ACC-2103', coord:'camila', codeProv:'PRV-73210-A', codeInt:'ACC-2103', name:'Clutch Derek Alba — Blanco',
     img:IMG.bolso1, costoActual:96000, costoAnterior:null, costoReprogramacion:null, minMargen:42,
     publicoAnterior:null, factura:'FAC-2201', cantidad:24,
-    sugerido:null, referente:null, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    sugerido:null, referente:null, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
   },
   {
@@ -781,119 +781,119 @@ let refs = [
       { marca:'Falabella', link:'https://falabella.com/derek-clutch-lazo', precio:229000 },
       { marca:'Sitio oficial Derek', link:'https://derek.com.co/clutch-lazo', precio:221000 }
     ],
-    descuento:5, publico:null, publicoCoordinador:null,
+    descuento:5, tipoDescuento:'Pie de factura', financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'FRG-3310', coord:'camila', codeProv:'PRV-61042-F', codeInt:'FRG-3310', name:'Derek Edición Limitada 100ml',
     img:IMG.perfume1, costoActual:58000, costoAnterior:54000, costoReprogramacion:56500, minMargen:46,
     publicoAnterior:165000, factura:'FAC-2201', cantidad:36,
-    sugerido:165000, referente:179000, referentes:[], descuento:0, publico:179000, publicoCoordinador:179000,
+    sugerido:165000, referente:179000, referentes:[], descuento:3, tipoDescuento:'Comercial', financieroNota:null, publico:179000, publicoCoordinador:179000,
     status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'FRG-3325', coord:'camila', codeProv:'PRV-61099-F', codeInt:'FRG-3325', name:'Derek Collection 75ml',
     img:IMG.perfume2, costoActual:61000, costoAnterior:null, costoReprogramacion:null, minMargen:46,
     publicoAnterior:null, factura:'FAC-2201', cantidad:30,
-    sugerido:150000, referente:158000, referentes:[], descuento:0, publico:105000, publicoCoordinador:null,
+    sugerido:150000, referente:158000, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:105000, publicoCoordinador:null,
     status:'rechazado', note:'El margen quedó en 41.9%, por debajo del mínimo (46%). Es una referencia nueva — revisa de nuevo el referente de mercado antes de proponer el precio.', devolucionMotivo:null
   },
   {
     id:'TXF-1187', coord:'laura', codeProv:'PRV-40021-T', codeInt:'TXF-1187', name:'Top Derek canesú — Negro',
     img:IMG.blusa1, costoActual:45000, costoAnterior:42000, costoReprogramacion:null, minMargen:50,
     publicoAnterior:109000, factura:'FAC-2205', cantidad:42,
-    sugerido:110000, referente:119000, referentes:[], descuento:0, publico:119000, publicoCoordinador:119000,
+    sugerido:110000, referente:119000, referentes:[], descuento:0, tipoDescuento:'Financiero', financieroNota:'30 días, sin afectar costo', publico:119000, publicoCoordinador:119000,
     status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1204', coord:'laura', codeProv:'PRV-40077-T', codeInt:'TXF-1204', name:'Sweater Derek moños — Crema',
     img:IMG.blusa2, costoActual:52000, costoAnterior:null, costoReprogramacion:null, minMargen:50,
     publicoAnterior:null, factura:'FAC-2205', cantidad:20,
-    sugerido:null, referente:null, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    sugerido:null, referente:null, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0876', coord:'david', codeProv:'PRV-55510-Z', codeInt:'ZAP-0876', name:'Sandalia Derek cuero — Café',
     img:IMG.zapato1, costoActual:68000, costoAnterior:63000, costoReprogramacion:70500, minMargen:44,
     publicoAnterior:149000, factura:'FAC-2210', cantidad:15,
-    sugerido:158000, referente:169000, referentes:[], descuento:8, publico:null, publicoCoordinador:null,
+    sugerido:158000, referente:169000, referentes:[], descuento:8, tipoDescuento:'Comercial', financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0901', coord:'david', codeProv:'PRV-55602-Z', codeInt:'ZAP-0901', name:'Botín Derek Western — Blanco',
     img:IMG.zapato2, costoActual:112000, costoAnterior:null, costoReprogramacion:null, minMargen:44,
     publicoAnterior:null, factura:'FAC-2210', cantidad:12,
-    sugerido:265000, referente:279000, referentes:[], descuento:0, publico:259000, publicoCoordinador:259000,
+    sugerido:265000, referente:279000, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:259000, publicoCoordinador:259000,
     status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'ACC-2130', coord:'camila', codeProv:'PRV-73340-A', codeInt:'ACC-2130', name:'Billetera Derek plisada — Beige',
     img:IMG.bolso1, costoActual:52000, costoAnterior:49000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:118000, factura:'FAC-2215', cantidad:20,
-    sugerido:118000, referente:125000, referentes:[], descuento:0, publico:122000, publicoCoordinador:122000,
+    sugerido:118000, referente:125000, referentes:[], descuento:4, tipoDescuento:'Pie de factura', financieroNota:null, publico:122000, publicoCoordinador:122000,
     status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'FRG-3350', coord:'camila', codeProv:'PRV-61150-F', codeInt:'FRG-3350', name:'Derek Aura Rose 50ml',
     img:IMG.perfume2, costoActual:39000, costoAnterior:36000, costoReprogramacion:null, minMargen:46,
     publicoAnterior:95000, factura:'FAC-2215', cantidad:26,
-    sugerido:98000, referente:104000, referentes:[], descuento:0, publico:99000, publicoCoordinador:99000,
+    sugerido:98000, referente:104000, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:99000, publicoCoordinador:99000,
     status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'ACC-2141', coord:'camila', codeProv:'PRV-73401-A', codeInt:'ACC-2141', name:'Mini bolso Derek trenzado — Camel',
     img:IMG.bolso2, costoActual:71000, costoAnterior:68000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:159000, factura:'FAC-2215', cantidad:14,
-    sugerido:162000, referente:170000, referentes:[], descuento:0, publico:165000, publicoCoordinador:165000,
+    sugerido:162000, referente:170000, referentes:[], descuento:6, tipoDescuento:'Comercial', financieroNota:null, publico:165000, publicoCoordinador:165000,
     status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1230', coord:'laura', codeProv:'PRV-40120-T', codeInt:'TXF-1230', name:'Vestido Derek canesú — Verde',
     img:IMG.blusa1, costoActual:63000, costoAnterior:60000, costoReprogramacion:null, minMargen:50,
     publicoAnterior:139000, factura:'FAC-2220', cantidad:16,
-    sugerido:145000, referente:152000, referentes:[], descuento:0, publico:149000, publicoCoordinador:149000,
+    sugerido:145000, referente:152000, referentes:[], descuento:3, tipoDescuento:'Pie de factura', financieroNota:null, publico:149000, publicoCoordinador:149000,
     status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1245', coord:'laura', codeProv:'PRV-40155-T', codeInt:'TXF-1245', name:'Cárdigan Derek trenzado — Gris',
     img:IMG.blusa2, costoActual:58000, costoAnterior:null, costoReprogramacion:null, minMargen:50,
     publicoAnterior:null, factura:'FAC-2220', cantidad:22,
-    sugerido:135000, referente:142000, referentes:[], descuento:0, publico:139000, publicoCoordinador:139000,
+    sugerido:135000, referente:142000, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:139000, publicoCoordinador:139000,
     status:'espera', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0920', coord:'david', codeProv:'PRV-55640-Z', codeInt:'ZAP-0920', name:'Mocasín Derek clásico — Negro',
     img:IMG.zapato1, costoActual:74000, costoAnterior:70000, costoReprogramacion:null, minMargen:44,
     publicoAnterior:159000, factura:'FAC-2225', cantidad:18,
-    sugerido:170000, referente:178000, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    sugerido:170000, referente:178000, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'ZAP-0934', coord:'david', codeProv:'PRV-55671-Z', codeInt:'ZAP-0934', name:'Bota Derek texana — Café',
     img:IMG.zapato2, costoActual:118000, costoAnterior:null, costoReprogramacion:null, minMargen:44,
     publicoAnterior:null, factura:'FAC-2225', cantidad:9,
-    sugerido:255000, referente:270000, referentes:[], descuento:0, publico:196000, publicoCoordinador:null,
+    sugerido:255000, referente:270000, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:196000, publicoCoordinador:null,
     status:'rechazado', note:'El margen quedó en 39.8%, por debajo del mínimo (44%). Hay competidores con precio de venta más alto — ajusta el referente de mercado.', devolucionMotivo:null
   },
   {
     id:'ZAP-0945', coord:'david', codeProv:'PRV-55690-Z', codeInt:'ZAP-0945', name:'Tenis Derek urbano — Gris',
     img:IMG.zapato1, costoActual:81000, costoAnterior:76000, costoReprogramacion:null, minMargen:44,
     publicoAnterior:172000, factura:'FAC-2225', cantidad:11,
-    sugerido:180000, referente:185000, referentes:[], descuento:0, publico:172000, publicoCoordinador:172000,
+    sugerido:180000, referente:185000, referentes:[], descuento:0, tipoDescuento:'Financiero', financieroNota:'45 días, sin afectar costo', publico:172000, publicoCoordinador:172000,
     status:'devuelto', note:null, devolucionMotivo:'Devolución de mercancía por avería en 6 pares detectada en bodega. Nota crédito NC-4482. Referencia anulada para este ID.'
   },
   {
     id:'TXM-1301', coord:'julian', codeProv:'PRV-42010-T', codeInt:'TXM-1301', name:'Polo Derek algodón — Azul',
     img:IMG.blusa1, costoActual:47000, costoAnterior:null, costoReprogramacion:null, minMargen:48,
     publicoAnterior:null, factura:'FAC-2230', cantidad:30,
-    sugerido:null, referente:null, referentes:[], descuento:0, publico:null, publicoCoordinador:null,
+    sugerido:null, referente:null, referentes:[], descuento:0, tipoDescuento:null, financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
   },
   {
     id:'TXM-1312', coord:'julian', codeProv:'PRV-42045-T', codeInt:'TXM-1312', name:'Camisa Derek lino — Blanco',
     img:IMG.blusa2, costoActual:55000, costoAnterior:52000, costoReprogramacion:null, minMargen:48,
     publicoAnterior:118000, factura:'FAC-2230', cantidad:24,
-    sugerido:120000, referente:128000, referentes:[], descuento:0, publico:126000, publicoCoordinador:126000,
+    sugerido:120000, referente:128000, referentes:[], descuento:2, tipoDescuento:'Comercial', financieroNota:null, publico:126000, publicoCoordinador:126000,
     status:'espera', note:null, devolucionMotivo:null
   }
 ];
@@ -939,6 +939,11 @@ function pvpSugeridoSistema(r){
   const costoBase = costoBaseDe(r);
   const valor = costoBase / (1 - r.minMargen/100);
   return Math.round(valor / 100) * 100;
+}
+function descuentoLabel(r){
+  if(!r.tipoDescuento) return 'Sin descuento';
+  if(r.tipoDescuento === 'Financiero') return 'Financiero — ' + (r.financieroNota || 'informativo, no afecta el costo');
+  return r.tipoDescuento + ' · ' + r.descuento + '% (afecta el costo, único por ID)';
 }
 
 /* ---------------- ROLE SWITCH ---------------- */
@@ -1280,8 +1285,7 @@ function openDetail(id){
   document.getElementById('costoAnterior').textContent = r.costoAnterior ? money(r.costoAnterior) : 'Primera compra';
   document.getElementById('costoReprogramacion').textContent = r.costoReprogramacion ? money(r.costoReprogramacion) : '—';
   document.getElementById('publicoAnterior').textContent = r.publicoAnterior ? money(r.publicoAnterior) : '—';
-  document.getElementById('descuentoInfo').textContent = r.descuento ? r.descuento + '%' : 'Sin descuento';
-  document.getElementById('minMargenInfo').textContent = r.minMargen + '%';
+  document.getElementById('descuentoInfo').textContent = descuentoLabel(r);
 
   document.getElementById('inpSugerido').value = r.sugerido ?? '';
   document.getElementById('inpReferente').value = r.referente ?? '';
@@ -1389,7 +1393,12 @@ function renderRefSources(r){
   if(sources.length === 0){
     el.innerHTML = '';
   } else {
-    el.innerHTML = sources.map((s, idx) => `
+    el.innerHTML = sources.map((s, idx) => {
+      const margen = calcMargin(r, s.precio);
+      const cumple = margen !== null && margen >= r.minMargen;
+      const margenHtml = margen === null ? '' :
+        `<div class="ref-source-margin ${cumple?'ok':'bad'}">Rentabilidad: ${margen.toFixed(1)}%</div>`;
+      return `
       <div class="ref-source-row">
         <div class="ref-source-main">
           <div class="ref-source-top">
@@ -1397,10 +1406,11 @@ function renderRefSources(r){
             <span class="ref-source-price">${money(s.precio)}</span>
           </div>
           ${s.link ? `<a class="ref-source-link" href="${s.link}" target="_blank" rel="noopener">${s.link}</a>` : ''}
+          ${margenHtml}
         </div>
         <button type="button" class="ref-source-del" onclick="removeSource(${idx})" aria-label="Eliminar fuente">✕</button>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
 
   const avgNote = document.getElementById('avgNote');
