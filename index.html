@@ -656,6 +656,7 @@
           <span class="prefix">$</span>
           <input type="text" id="inpSugerido" placeholder="0" inputmode="numeric">
         </div>
+        <div class="ref-source-margin" id="margenSugerido"></div>
       </div>
 
       <div class="field">
@@ -664,6 +665,7 @@
           <span class="prefix">$</span>
           <input type="text" id="inpReferente" placeholder="0" inputmode="numeric">
         </div>
+        <div class="ref-source-margin" id="margenReferente"></div>
 
         <div class="ref-sources" id="refSources"></div>
 
@@ -774,7 +776,7 @@ let refs = [
   },
   {
     id:'ACC-2087', coord:'camila', codeProv:'PRV-73088-A', codeInt:'ACC-2087', name:'Clutch Derek Lazo — Negro',
-    img:IMG.bolso2, costoActual:88000, costoAnterior:82000, costoReprogramacion:null, minMargen:42,
+    img:IMG.bolso2, costoActual:83600, costoAnterior:82000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:195000, factura:'FAC-2201', cantidad:18,
     sugerido:166950, referente:177950,
     referentes:[
@@ -786,7 +788,7 @@ let refs = [
   },
   {
     id:'FRG-3310', coord:'camila', codeProv:'PRV-61042-F', codeInt:'FRG-3310', name:'Derek Edición Limitada 100ml',
-    img:IMG.perfume1, costoActual:58000, costoAnterior:54000, costoReprogramacion:56500, minMargen:46,
+    img:IMG.perfume1, costoActual:56260, costoAnterior:54000, costoReprogramacion:56500, minMargen:46,
     publicoAnterior:165000, factura:'FAC-2201', cantidad:36,
     sugerido:120950, referente:127950, referentes:[], descuento:3, tipoDescuento:'Comercial', financieroNota:null, publico:179000, publicoCoordinador:179000,
     status:'espera', note:null, devolucionMotivo:null
@@ -814,7 +816,7 @@ let refs = [
   },
   {
     id:'ZAP-0876', coord:'david', codeProv:'PRV-55510-Z', codeInt:'ZAP-0876', name:'Sandalia Derek cuero — Café',
-    img:IMG.zapato1, costoActual:68000, costoAnterior:63000, costoReprogramacion:70500, minMargen:44,
+    img:IMG.zapato1, costoActual:62560, costoAnterior:63000, costoReprogramacion:70500, minMargen:44,
     publicoAnterior:149000, factura:'FAC-2210', cantidad:15,
     sugerido:128950, referente:136950, referentes:[], descuento:8, tipoDescuento:'Comercial', financieroNota:null, publico:null, publicoCoordinador:null,
     status:'pendiente', note:null, devolucionMotivo:null
@@ -828,7 +830,7 @@ let refs = [
   },
   {
     id:'ACC-2130', coord:'camila', codeProv:'PRV-73340-A', codeInt:'ACC-2130', name:'Billetera Derek plisada — Beige',
-    img:IMG.bolso1, costoActual:52000, costoAnterior:49000, costoReprogramacion:null, minMargen:42,
+    img:IMG.bolso1, costoActual:49920, costoAnterior:49000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:118000, factura:'FAC-2215', cantidad:20,
     sugerido:99950, referente:106950, referentes:[], descuento:4, tipoDescuento:'Pie de factura', financieroNota:null, publico:122000, publicoCoordinador:122000,
     status:'aprobado', note:null, devolucionMotivo:null
@@ -842,14 +844,14 @@ let refs = [
   },
   {
     id:'ACC-2141', coord:'camila', codeProv:'PRV-73401-A', codeInt:'ACC-2141', name:'Mini bolso Derek trenzado — Camel',
-    img:IMG.bolso2, costoActual:71000, costoAnterior:68000, costoReprogramacion:null, minMargen:42,
+    img:IMG.bolso2, costoActual:66740, costoAnterior:68000, costoReprogramacion:null, minMargen:42,
     publicoAnterior:159000, factura:'FAC-2215', cantidad:14,
     sugerido:132950, referente:141950, referentes:[], descuento:6, tipoDescuento:'Comercial', financieroNota:null, publico:165000, publicoCoordinador:165000,
     status:'aprobado', note:null, devolucionMotivo:null
   },
   {
     id:'TXF-1230', coord:'laura', codeProv:'PRV-40120-T', codeInt:'TXF-1230', name:'Vestido Derek canesú — Verde',
-    img:IMG.blusa1, costoActual:63000, costoAnterior:60000, costoReprogramacion:null, minMargen:50,
+    img:IMG.blusa1, costoActual:61110, costoAnterior:60000, costoReprogramacion:null, minMargen:50,
     publicoAnterior:139000, factura:'FAC-2220', cantidad:16,
     sugerido:141950, referente:150950, referentes:[], descuento:3, tipoDescuento:'Pie de factura', financieroNota:null, publico:149000, publicoCoordinador:149000,
     status:'espera', note:null, devolucionMotivo:null
@@ -891,7 +893,7 @@ let refs = [
   },
   {
     id:'TXM-1312', coord:'julian', codeProv:'PRV-42045-T', codeInt:'TXM-1312', name:'Camisa Derek lino — Blanco',
-    img:IMG.blusa2, costoActual:55000, costoAnterior:52000, costoReprogramacion:null, minMargen:48,
+    img:IMG.blusa2, costoActual:53900, costoAnterior:52000, costoReprogramacion:null, minMargen:48,
     publicoAnterior:118000, factura:'FAC-2230', cantidad:24,
     sugerido:120950, referente:127950, referentes:[], descuento:2, tipoDescuento:'Comercial', financieroNota:null, publico:126000, publicoCoordinador:126000,
     status:'espera', note:null, devolucionMotivo:null
@@ -926,8 +928,9 @@ function coordRefs(){
   return refs.filter(r => r.coord === activeCoord);
 }
 function costoBaseDe(r){
-  const descuento = r.descuento || 0;
-  return r.costoActual * (1 - descuento/100);
+  // El costo ya llega desde CRM con el descuento (Comercial o Pie de factura) aplicado.
+  // El campo descuento/tipoDescuento es solo informativo, no se vuelve a restar aquí.
+  return r.costoActual;
 }
 function costoConIvaCompra(r){
   return costoBaseDe(r) * 1.19; // IVA de compra, siempre 19%
@@ -941,7 +944,7 @@ function redondearTerminacion950(valor){
   return Math.ceil(valor / 1000) * 1000 - 50;
 }
 function pvpSugeridoSistema(r){
-  // PVP sugerido = (costo con IVA de compra, ya con descuento) / (1 - rentabilidad mínima), terminando en 950
+  // PVP sugerido = costo con IVA de compra (el costo ya viene con descuento aplicado desde CRM) / (1 - rentabilidad mínima), terminando en 950
   const costo = costoConIvaCompra(r);
   const bruto = costo / (1 - r.minMargen/100);
   return redondearTerminacion950(bruto);
@@ -949,7 +952,7 @@ function pvpSugeridoSistema(r){
 function descuentoLabel(r){
   if(!r.tipoDescuento) return 'Sin descuento';
   if(r.tipoDescuento === 'Financiero') return 'Financiero — ' + (r.financieroNota || 'informativo, no afecta el costo');
-  return r.tipoDescuento + ' · ' + r.descuento + '%';
+  return r.tipoDescuento + ' · ' + r.descuento + '% — ya aplicado en el costo mostrado';
 }
 
 /* ---------------- ROLE SWITCH ---------------- */
@@ -1337,6 +1340,7 @@ function openDetail(id){
 
   renderFooter(r);
   updateProfit();
+  updateAuxMargins();
 }
 
 function renderFooter(r){
@@ -1467,6 +1471,7 @@ function recalcReferenteAverage(r){
   const avg = r.referentes.reduce((sum, s) => sum + (s.precio || 0), 0) / r.referentes.length;
   document.getElementById('inpReferente').value = Math.round(avg);
   updateProfit();
+  updateAuxMargins();
 }
 
 /* ---------------- PVP SUGERIDO ---------------- */
@@ -1478,6 +1483,25 @@ function usarSugerido(){
 }
 
 /* ---------------- PROFIT CALC (live) ---------------- */
+function renderMarginCaption(elId, r, valor){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  const margen = calcMargin(r, valor);
+  if(margen === null){
+    el.textContent = '';
+    el.className = 'ref-source-margin';
+    return;
+  }
+  const cumple = margen >= r.minMargen;
+  el.textContent = 'Rentabilidad: ' + margen.toFixed(1) + '%';
+  el.className = 'ref-source-margin ' + (cumple ? 'ok' : 'bad');
+}
+function updateAuxMargins(){
+  const r = refs.find(x=>x.id===currentRefId);
+  if(!r) return;
+  renderMarginCaption('margenSugerido', r, parseNum(document.getElementById('inpSugerido').value));
+  renderMarginCaption('margenReferente', r, parseNum(document.getElementById('inpReferente').value));
+}
 function updateProfit(){
   const r = refs.find(x=>x.id===currentRefId);
   if(!r) return;
@@ -1528,6 +1552,7 @@ function updateProfit(){
 
 ['inpSugerido','inpReferente','inpPublico'].forEach(id=>{
   document.getElementById(id).addEventListener('input', updateProfit);
+  document.getElementById(id).addEventListener('input', updateAuxMargins);
 });
 
 /* ---------------- ACTIONS ---------------- */
