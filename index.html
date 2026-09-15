@@ -673,7 +673,7 @@
           <span>↻</span> <span>Promedio de <b id="avgCount">0</b> fuentes: <b id="avgValue">—</b></span>
         </div>
 
-        <div class="add-source-toggle" onclick="toggleAddSource()">
+        <div class="add-source-toggle" id="addSourceToggle" onclick="toggleAddSource()">
           <span id="addSourceIcon">＋</span> <span id="addSourceLabel">Agregar fuente (opcional)</span>
         </div>
 
@@ -698,7 +698,7 @@
       </div>
     </div>
 
-    <div class="suggest-card">
+    <div class="suggest-card" id="suggestCard">
       <div class="suggest-meta">
         <div class="k">PVP sugerido por el sistema</div>
         <div class="v" id="pvpSugeridoValor">—</div>
@@ -1067,28 +1067,34 @@ function renderList(){
   }).join('');
 }
 
-/* ----- GERENCIA: lista de facturas con referencias pendientes de su aprobación ----- */
-function facturasConEspera(){
-  const facturas = new Set(refs.filter(r=>r.status==='espera').map(r=>r.factura || 'sin-factura'));
+/* ----- GERENCIA: lista de facturas con referencias por aprobar o ya aprobadas por ella ----- */
+let gerenciaFilter = 'espera'; // 'espera' | 'aprobado'
+
+function facturasGerencia(){
+  const facturas = new Set(refs.filter(r=>r.status==='espera' || r.status==='aprobado').map(r=>r.factura || 'sin-factura'));
   return [...facturas];
 }
 function renderGerenciaList(container){
-  const facturas = facturasConEspera();
+  const facturas = facturasGerencia();
 
   if(facturas.length === 0){
     container.innerHTML = `<div class="empty-state">
       <div class="icon">✅</div>
-      <div class="title">Sin referencias pendientes</div>
-      <div class="sub">No hay referencias esperando tu aprobación por ahora.</div>
+      <div class="title">Sin referencias para mostrar</div>
+      <div class="sub">No hay referencias pendientes ni aprobadas por el momento.</div>
     </div>`;
     return;
   }
 
   container.innerHTML = facturas.map(facturaId=>{
     const todas = refs.filter(r => (r.factura || 'sin-factura') === facturaId);
-    const pendientes = todas.filter(r=>r.status==='espera').length;
+    const porAprobar = todas.filter(r=>r.status==='espera').length;
+    const aprobadas = todas.filter(r=>r.status==='aprobado').length;
     const coordInfo = COORDINATORS.find(c=>c.id === todas[0].coord);
     const label = facturaId === 'sin-factura' ? 'Sin factura asignada' : facturaId;
+    const badge = porAprobar > 0
+      ? `<div class="factura-badge espera">${porAprobar} por aprobar</div>`
+      : `<div class="factura-badge aprobado">${aprobadas} aprobadas</div>`;
     return `
       <div class="factura-group" onclick="openFacturaDetail('${facturaId}')">
         <div class="factura-header">
@@ -1096,14 +1102,26 @@ function renderGerenciaList(container){
           <div class="factura-main">
             <div class="factura-top">
               <div class="factura-name">${label}</div>
-              <div class="factura-badge espera">${pendientes} por aprobar</div>
+              ${badge}
             </div>
-            <div class="factura-hint">${coordInfo ? coordInfo.name + ' · ' + coordInfo.category : ''} · ${todas.length} referencias en total</div>
+            <div class="factura-hint">${coordInfo ? coordInfo.name + ' · ' + coordInfo.category : ''} · Por aprobar: ${porAprobar} · Aprobadas: ${aprobadas}</div>
           </div>
           <div class="factura-chevron open">›</div>
         </div>
       </div>`;
   }).join('');
+}
+function setGerenciaFilter(key){ gerenciaFilter = key; renderGerenciaTabs(); renderFacturaList(); }
+function renderGerenciaTabs(){
+  const tabsEl = document.getElementById('tabs');
+  const scope = currentFacturaId ? facturaRefs(currentFacturaId) : [];
+  const porAprobar = scope.filter(r=>r.status==='espera').length;
+  const aprobadas = scope.filter(r=>r.status==='aprobado').length;
+  tabsEl.innerHTML = `
+    <div class="tab ${gerenciaFilter==='espera'?'active':''}" onclick="setGerenciaFilter('espera')">
+      <span class="dot" style="background:#0076F5"></span>Por aprobar <span class="count">${porAprobar}</span></div>
+    <div class="tab ${gerenciaFilter==='aprobado'?'active':''}" onclick="setGerenciaFilter('aprobado')">
+      <span class="dot" style="background:#A1FF0A"></span>Aprobadas <span class="count">${aprobadas}</span></div>`;
 }
 
 /* ----- PAGE 2: factura detail (filters apply here) ----- */
@@ -1125,7 +1143,8 @@ function openFacturaDetail(facturaId){
   if(activeRole === 'gerencia'){
     const coordInfo = COORDINATORS.find(c=>c.id === list[0].coord);
     document.getElementById('facturaDetailSub').textContent = `${coordInfo ? coordInfo.name : ''} · ${list.length} referencias`;
-    document.getElementById('tabs').innerHTML = '';
+    gerenciaFilter = 'espera';
+    renderGerenciaTabs();
     document.getElementById('viewToolbar').style.display = 'none';
   } else {
     const coordInfo = COORDINATORS.find(c=>c.id===activeCoord);
@@ -1207,18 +1226,16 @@ function renderFacturaList(){
   const scope = currentFacturaId ? facturaRefs(currentFacturaId) : [];
 
   if(activeRole === 'gerencia'){
-    const porAprobar = scope.filter(r=>r.status==='espera');
-    const otras = scope.filter(r=>r.status!=='espera');
-    let html = '';
-    html += `<div class="list-section-label">Pendientes de tu aprobación (${porAprobar.length})</div>`;
-    html += porAprobar.length
-      ? porAprobar.map(r=>renderRefCard(r)).join('')
-      : `<div class="empty-state" style="padding:24px 10px;"><div class="sub">No quedan referencias por aprobar en esta factura.</div></div>`;
-    if(otras.length){
-      html += `<div class="list-section-label">Otras referencias de esta factura</div>`;
-      html += otras.map(r=>renderRefCard(r, {disabled:true})).join('');
+    const filtered = scope.filter(r=>r.status===gerenciaFilter);
+    if(filtered.length === 0){
+      container.innerHTML = `<div class="empty-state">
+        <div class="icon">📭</div>
+        <div class="title">Nada por aquí</div>
+        <div class="sub">${gerenciaFilter==='espera' ? 'No hay referencias por aprobar en esta factura.' : 'Aún no hay referencias aprobadas en esta factura.'}</div>
+      </div>`;
+      return;
     }
-    container.innerHTML = html;
+    container.innerHTML = filtered.map(r=>renderRefCard(r)).join('');
     return;
   }
 
@@ -1338,6 +1355,13 @@ function openDetail(id){
   document.getElementById('inpPublico').disabled = !(camposEditablesCoordinador || camposEditablesGerencia);
   document.getElementById('btnUsarSugerido').disabled = !(camposEditablesCoordinador || camposEditablesGerencia);
 
+  // Para Gerencia: no agrega fuentes de mercado, y el PVP sugerido por el sistema es solo de Coordinador
+  document.getElementById('addSourceToggle').style.display = activeRole === 'gerencia' ? 'none' : 'flex';
+  document.getElementById('addSourceForm').classList.remove('open');
+  if (activeRole === 'gerencia') document.getElementById('addSourceForm').style.display = 'none';
+  else document.getElementById('addSourceForm').style.display = '';
+  document.getElementById('suggestCard').style.display = activeRole === 'gerencia' ? 'none' : 'flex';
+
   renderFooter(r);
   updateProfit();
   updateAuxMargins();
@@ -1385,6 +1409,7 @@ function closeDetail(){
   document.getElementById('detailView').classList.remove('active');
   currentRefId = null;
   if(activeRole === 'coordinador') renderTabs();
+  else renderGerenciaTabs();
   renderFacturaList();
 }
 
